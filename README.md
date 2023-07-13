@@ -130,11 +130,12 @@ Now reboot your Pi by inputting the command `sudo reboot`, wait for a while (pos
 You now have and API where you can get the readings of your MLX90640 camera that update in real time that you can use however you want (However I recommend staying within the bounds of the law)!
 
 Parts of this guide are taken from the following sources:
+
 [Everything Smart Home on YouTube](https://www.youtube.com/watch?v=XRwbcsbh33w)
 
 [Joshua Hrisko on Makers Portal](https://makersportal.com/blog/2020/6/8/high-resolution-thermal-camera-with-raspberry-pi-and-mlx90640)
 
 [The Raspberry Pi Foundation](https://projects.raspberrypi.org/en/projects/python-web-server-with-flask/1)
 
-[Avram Piltch on Tom's Hardware)(https://www.tomshardware.com/how-to/run-script-at-boot-raspberry-pi)
+[Avram Piltch on Tom's Hardware](https://www.tomshardware.com/how-to/run-script-at-boot-raspberry-pi)
 
