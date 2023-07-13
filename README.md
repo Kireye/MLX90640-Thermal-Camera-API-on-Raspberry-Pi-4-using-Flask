@@ -46,10 +46,90 @@ Note that the 3-6V, GND, SDL and SCL connections on your cameras board are not i
 
 Connect you Pi to your power supply and wait for 5 minutes.
 
-## Preparing your Pi
+## Configuring your Pi
 We will now be SSHing into your Pi. For this I will be using PuTTY, found [here](https://putty.org/).
 Open PuTTY and in the field "Host Name" write the name that you gave your Pi earlier (you should not put ".local" afterward. Only input the name) and click "Open" in the bottom right.
 Now write the username that you sellected, press neter, and then write the password that you entered. The password will not be shown in the terminal while you are writing it, but is is being writen.
 
-We now need to install som things via some different commands. Enter them one at a time in the order that they are writen bellow:
-`test`
+We now need to install som things via some different commands. To copy the command into the SSH-terminal you cannot use the usual _Ctrl+V_ shortcut, but instead need to rightclick the terminal portion of the window. Enter them one at a time in the order that they are writen:
+`sudo apt install python3-numpy` once promted enter "y".
+`sudo apt install python3-smbus i2c-tools`
+`sudo pip3 install RPI.GPIO adafruit-blinka`
+`sudo pip3 install adafruid-circuitpython-mlx90640`.
+Now we have to edit enable i2c.
+Enter the command `sudo nano /boot/config.txt` and uncomment the following line by removing the "#" in front of the text. Do net edit the actual text.
+![](configChange.jpg)
+
+Now press _Ctrl+S_ and then _Ctrl+X_ to save and exit the config file.
+Now reboot your Pi by writing the command `sudo reboot` into the terminal. This is needed to apply the changes we made in the config file.
+
+You will now need to close PuTTY, reopen it, and reconnect to your Pi. When you have connected to it, run the following command `i2cdetect -y 1`.
+This will check to see if your MLX90640 camera is dettected by i2c. The response you get should look similar to this:
+![](i2cCheck.jpg)
+
+If you do not get a respone, make sure that your camera is properly connected to the pins on your Pi.
+
+## Seting up Flask
+First run the following commands in the order they are writen
+`sudo pip3 install flask`
+`mkdir webapp`
+`cd webapp`
+`nano app.py`
+Click _Ctrl+S_ and then _Ctrl+X_. Then imput the comand `cd` then `ls`. The _ls <filename>_ command lists the contents of the file that it is pointet toward. Because we did not point it anywhere, it lists the contents of the directory that we are currently in. Make sure that the _ls_ command listed a directory called "webapp".
+Now enter the command `cd webapp` (_cd_ stands for "change directory by the way) and then `ls`again. Make sure that there is a file called "app.py" listed here.
+Enter the command `nano app.py` which will let you edit the file.
+Copy the bellow code into _app.py_.
+
+```
+import time,board,busio
+import adafruit_mlx90640
+import numpy as np
+from flask import Flask
+
+app = Flask(__name__)
+
+i2c = busio.I2C(board.SCL, board.SDA, frequency=400000) #Sets up i2c to work
+mlx = adafruit_mlx90640.MLX90640(i2c) #Defines mlx
+mlx.refresh_rate = adafruit_mlx90640.RefreshRate.REFRESH_1_HZ #Sets the refresh rate of the camera.
+
+@app.route('/')
+
+def index():
+        frame = np.zeros(768) #Creates frame array. Change 768 to the number of pixels that your camera has in total if you are not using an MLX90640. My camera has a resolution of 24x32 which makes the total pixels 768.
+        mlx.getFrame(frame) #Gets the temperature information from the camera and enters it into the frame array
+        frameString = ','.join(str(x) for x in frame) #Converts frame into a , seperated string
+        return frameString #Returns the captured temperature of the camera's pixels as a , seperated string
+
+if __name__ == '__main__':
+        app.run(debug=True, host='0.0.0.0') #Enables debug and sets host
+```
+Press _Ctrl+S_ and then _Ctrl+X_  to save and exit the file.
+Enter the command `python3 app.py`.
+Now open a browser and go to the IP-adress of your Pi but ender _:5000_ after the adress like so.
+```
+XXX.XXX.X.XX:5000
+```
+You should now see an exceedingly long string of numbers like this:
+![](flaskExample.jpg)
+
+To stop _app.py_ simply press _Ctrl+C_ while in the SSH terminal.
+
+## Running _app.py_ on Pi boot
+Now we will make it so that the _app.py_ script that we wrote earlier gets ran automaticaly when we turn on our Raspberry Pi. This way you don't have to run it again incase your Pi ever turns of for some reason.
+This is fairly simple.
+Make sure that _app.py_ is not running py pressing _Ctrl+C_ while in the SSH terminal.
+First run this command `cd` then `sudo crontab -e`
+If promted, sellect "nano" by pressing the corrosponding number (in my case 1) and then pressing enter.
+Add the following line at the very bottom of the file. Make sure to replace "pi" with the username that you set during OS instalation and that you have been using to log in to the SSH. In my case this is "admin".
+![](conExample.jpg)
+
+Press _Ctrl+S_ and then _Ctr+X_ to save and exit the file.
+
+Now reboot your Pi by imputting the command `sudo reboot`, wait for a while (possibly a few minutes) and your web page with all the numbers should be back up and running again.
+You now have and API where you can get the readings of your MLX90640 camera that update in real time that you can use however you want (However I reccomend staying within the bounds of the law)!
+
+Parts of this guide are taken from the following sources:
+[Everything Smart Home on YouTube](https://www.youtube.com/watch?v=XRwbcsbh33w)
+[Joshua Hrisko on Makers Portal](https://makersportal.com/blog/2020/6/8/high-resolution-thermal-camera-with-raspberry-pi-and-mlx90640)
+[The Raspberry Pi Foundation](https://projects.raspberrypi.org/en/projects/python-web-server-with-flask/1)
+[Avram Piltch on Tom's Hardware)(https://www.tomshardware.com/how-to/run-script-at-boot-raspberry-pi)
