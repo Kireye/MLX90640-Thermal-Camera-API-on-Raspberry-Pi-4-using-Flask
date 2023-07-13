@@ -65,6 +65,7 @@ Now reboot your Pi by writing the command `sudo reboot` into the terminal. This 
 
 You will now need to close PuTTY, reopen it, and reconnect to your Pi. When you have connected to it, run the following command `i2cdetect -y 1`.
 This will check to see if your MLX90640 camera is detected by i2c. The response you get should look similar to this:
+
 ![](i2cCheck.jpg)
 
 If you do not get a response, make sure that your camera is properly connected to the pins on your Pi.
