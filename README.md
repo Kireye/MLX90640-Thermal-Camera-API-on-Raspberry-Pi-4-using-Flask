@@ -52,4 +52,4 @@ Open PuTTY and in the field "Host Name" write the name that you gave your Pi ear
 Now write the username that you sellected, press neter, and then write the password that you entered. The password will not be shown in the terminal while you are writing it, but is is being writen.
 
 We now need to install som things via some different commands. Enter them one at a time in the order that they are writen bellow:
-![test]
+![](test.txt)
