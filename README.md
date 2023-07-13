@@ -42,7 +42,7 @@ Unplugg your power supply from your Pi.
 Solder one of the connectors that came with your camera to the connectors on your camera.
 Wireing should be done like the image bellow.
 Note that the 3-6V, GND, SDL and SCL connections on your cameras board are not in the same order as the ones on on the image.
-![wireing.jpg]
+![](wireing.jpg)
 
 Connect you Pi to your power supply and wait for 5 minutes.
 
