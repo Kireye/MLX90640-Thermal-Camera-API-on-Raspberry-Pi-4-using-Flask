@@ -137,5 +137,5 @@ Parts of this guide are taken from the following sources:
 
 [The Raspberry Pi Foundation](https://projects.raspberrypi.org/en/projects/python-web-server-with-flask/1)
 
-[Avram Piltch on Tom's Hardware](https://www.tomshardware.com/how-to/run-script-at-boot-raspberry-pi)
+
 
