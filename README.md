@@ -9,6 +9,8 @@ For this you will need:
 - A method of SSHing into the Pi
 - (If your Pi does not have an operating system) Micro SD-card. Make sure this card does not contain important files as the card will be wiped when we use it.
 - (If your Pi does not have an operating system) SD-card reader
+- Soldering equipment
+- 4 Wires
 
 ## Seting up your Raspberyy Pi
 To begin you will need a Raspberry Pi and an SD-card.
@@ -31,3 +33,22 @@ One important thing to note here is that if you ever feel the need to reinstall 
 Click "save" at the bottom of this window, then click "Write" and wait for your OS to be writen to the SD-card.
 Now incert the SD-card into your Pi **while it is _NOT_ connceted to power**.
 Connect the Pi to your power supply and wait for 5 minutes.
+Open a cmd window and write "ping [the name of your Pi]" and hit enter.
+If your Pi does not respond, you most likely did not configure your wireless lan correctly during OS-setup and will need to redo that process. **Unplugg your power supply before removing the SD-card**.
+If it does respond, proceed to the next step.
+
+## Wireing the MLX90640 camera to your Pi
+Unplugg your power supply from your Pi.
+Solder one of the connectors that came with your camera to the connectors on your camera.
+Wireing should be done like the image bellow.
+Note that the 3-6V, GND, SDL and SCL connections on your cameras board are not in the same order as the ones on on the image.
+![wireing.jpg]
+
+Connect you Pi to your power supply and wait for 5 minutes.
+
+## Preparing your Pi
+We will now be SSHing into your Pi. For this I will be using PuTTY, found [here](https://putty.org/).
+Open PuTTY and in the field "Host Name" write the name that you gave your Pi earlier (you should not put ".local" afterward. Only input the name) and click "Open" in the bottom right.
+Now write the username that you sellected, press neter, and then write the password that you entered. The password will not be shown in the terminal while you are writing it, but is is being writen.
+
+We now need to install som things via some different commands. Enter them one at a time in the order that they are writen bellow:
