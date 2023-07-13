@@ -129,7 +129,7 @@ Press _Ctrl+S_ and then _Ctr+X_ to save and exit the file.
 Now reboot your Pi by inputting the command `sudo reboot`, wait for a while (possibly a few minutes) and your web page with all the numbers should be back up and running again.
 You now have and API where you can get the readings of your MLX90640 camera that update in real time that you can use however you want (However I recommend staying within the bounds of the law)!
 
-Parts of this guide are taken from the following sources:
+### Parts of this guide are taken from the following sources:
 
 [Everything Smart Home on YouTube](https://www.youtube.com/watch?v=XRwbcsbh33w)
 
