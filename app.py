@@ -11,6 +11,8 @@ app = Flask(__name__)
 i2c = busio.I2C(board.SCL, board.SDA, frequency=400000) #Sets up i2c to work
 mlx = adafruit_mlx90640.MLX90640(i2c) #Defines mlx
 mlx.refresh_rate = adafruit_mlx90640.RefreshRate.REFRESH_1_HZ #Sets the refresh rate of the camera.
+x_pixels = 32 #Thermal camera resolution X
+y_pixels = 24 #Thermal camera resolution Y
 
 @app.route("/")
 def index():
@@ -19,7 +21,7 @@ def index():
 @app.route('/thermal')
 
 def thermal():
-        frame = np.zeros(768) #Creates frame array. Change 768 to the number of pixels that your camera has in total if you are not using an MLX90640. My camera has a resolution of 32x24 which makes the total pixels 768.
+        frame = np.zeros(x_pixels*y_pixels) #Creates frame array. 
         mlx.getFrame(frame) #Gets the temperature information from the camera and enters it into the frame array
         frameString = ','.join(str(x) for x in frame) #Converts frame into a , seperated string
         ##return frameString #Returns the captured temperature of the camera's pixels as a , seperated string
